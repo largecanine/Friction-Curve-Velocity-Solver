@@ -1,0 +1,40 @@
+public class CurveVelocitySpeedCalculator{
+  private static final double PI=Math.PI;
+  private static final double a_g = 9.81;
+  
+  private static double radius=1.0;
+  private static double mu = 0.1;
+  
+  private static double initV=0.0;
+  private static double angleRad=PI/2;
+  private static double arcLen=radius*angleRad;
+  
+  private static double getAngle(int i,double angleRad,int numIntervals){
+    return ((double) (i))*(angleRad/numIntervals);
+  }
+  private static double getAcc(int i,int iterations){
+    return (a_g*(Math.cos(getAngle(i,angleRad,iterations)))-
+            mu*(Math.pow(initV,2)/radius+a_g*Math.sin(getAngle(i,angleRad,iterations))));
+  }
+  
+  private static void getVel(int iterations){
+    initV=0.0;
+    
+    for(int i=0;i<(int) iterations;i++){
+      initV=Math.sqrt(Math.pow(initV,2)+2*getAcc(i,iterations)*(arcLen/iterations));
+      //System.out.println("vel: " + initV);
+    }
+    System.out.println("Number of iterations: " + iterations);
+    System.out.println("Mu: " + mu);
+    System.out.println("Final Velocity: " + initV + "\n");
+  }
+  
+  public static void main(String[] args){
+    getVel(5);
+    getVel(10);
+    getVel(500);
+    getVel(100);
+    getVel(10000);
+    getVel(1000000);      
+  }
+}
